@@ -14,14 +14,14 @@
         
         .model-corner-left {
             position: absolute;
-            bottom: -150px;
+            bottom: 0;
             left: -50px;
             width: 400px;
             height: 400px;
             z-index: 0;
             pointer-events: none;
             opacity: 0.8;
-            transform: rotate(30deg);
+            transform: translateY(150px) rotate(30deg);
         }
 
         .model-corner-right {
@@ -41,8 +41,9 @@
                 width: 250px;
                 height: 250px;
                 opacity: 0.4;
-                bottom: -80px;
+                bottom: 0;
                 left: -30px;
+                transform: translateY(80px) rotate(30deg);
             }
             .model-corner-right {
                 width: 250px;
@@ -321,7 +322,7 @@
         </section>
 
         <!-- 4. Conclusion & Team -->
-        <section style="padding-bottom: 5rem;">
+        <section style="padding-bottom: 2rem;">
             <h2>Conclusion & Future Work</h2>
             <p style="margin-bottom: 1.5rem; max-width: 900px;">
                 As we wrap up, we’ve designed detailed 3D models for the glasses, sourced core electronics, and significantly progressed our software for object detection and navigation algorithms.
@@ -331,13 +332,12 @@
             </p>
             
             <h3 style="margin-bottom: 1rem;">Future Scope</h3>
-            <ul style="list-style-type: square; margin-left: 1.5rem; margin-bottom: 4rem; color: #cccccc;">
+            <ul style="list-style-type: square; margin-left: 1.5rem; margin-bottom: 1rem; color: #cccccc;">
                 <li style="margin-bottom: 0.5rem;">Improvement of user-friendliness and re-formatting the 3D model for a better fit.</li>
                 <li style="margin-bottom: 0.5rem;">Making the codebase more robust with start/stop commands and error handling.</li>
                 <li style="margin-bottom: 0.5rem;">Size reduction, hardware optimization, and cost reduction via alternative SBCs.</li>
                 <li style="margin-bottom: 0.5rem;">Introducing new custom-designed ML models for obstacle detection, currency detection, and facial detection.</li>
             </ul>
-
 
         </section>
 
