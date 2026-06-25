@@ -164,6 +164,27 @@
             height: 100%;
             display: block;
         }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding-left: 0.75rem;
+                padding-right: 2rem;
+                transform: none;
+            }
+
+            .brand-assets {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 0.5rem 1.15rem;
+            }
+
+            .footer-meta {
+                margin-top: 0.25rem;
+            }
+        }
     </style>
 </head>
 <body>
