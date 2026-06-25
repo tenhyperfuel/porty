@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suhas Nanda Kollipara</title>
-    <!-- Importing a rounded typography style based on theme images -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -13,17 +12,24 @@
             padding: 0;
         }
 
+        html, body {
+            height: 100%;
+            background-color: #000000;
+            overflow: hidden;
+        }
+
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: #000000;
             color: #ffffff;
-            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem 2rem 0 2rem;
             text-align: left;
         }
 
-        .container {
+        .top-content {
             max-width: 600px;
-            margin: 0;
         }
 
         .name {
@@ -31,7 +37,6 @@
             font-weight: 700;
             letter-spacing: -0.5px;
             margin-bottom: 2rem;
-            text-transform: none;
         }
 
         .items-list {
@@ -45,17 +50,57 @@
             font-weight: 400;
             color: #cccccc;
             letter-spacing: 0.5px;
-            transition: color 0.2s ease;
         }
 
-        .item:hover {
-            color: #ffffff;
+        /* Bottom 3rd Transit Display */
+        .transit-display-container {
+            height: 33.33vh;
+            width: 100vw;
+            margin-left: -2rem; /* Negate body padding to go edge-to-edge */
+            background-color: #050505;
+            border-top: 4px solid #111111;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            
+            /* Subtly emulating a pixel matrix screen grid overlay */
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.75) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.75) 1px, transparent 1px);
+            background-size: 4px 4px;
+        }
+
+        .ticker-wrapper {
+            display: flex;
+            width: 100%;
+        }
+
+        .ticker-text {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 4.5vh; /* Responsive blocky size scaling with screen height */
+            color: #ff3300; /* Classic transit amber/red glow. Change to #00ff66 for green or #3399ff for blue */
+            white-space: nowrap;
+            padding-left: 100%;
+            display: inline-block;
+            animation: transitScroll 25s linear infinite;
+            text-shadow: 0 0 8px rgba(255, 51, 0, 0.6);
+            letter-spacing: 4px;
+        }
+
+        @keyframes transitScroll {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+            100% {
+                transform: translate3d(-100%, 0, 0);
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="top-content">
     <div class="name">Suhas Nanda Kollipara</div>
     
     <div class="items-list">
@@ -63,6 +108,14 @@
         <div class="item">shastra</div>
         <div class="item">be.glasses</div>
         <div class="item">the finite social</div>
+    </div>
+</div>
+
+<div class="transit-display-container">
+    <div class="ticker-wrapper">
+        <div class="ticker-text">
+            REFINITE • SHASTRA • BE.GLASSES • THE FINITE SOCIAL • NEXT ARRIVAL: INNOVATION NOW • 
+        </div>
     </div>
 </div>
 
