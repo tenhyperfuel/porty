@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shastra. | engineering the future</title>
+    <style>
+        /* Base Styles from index.html */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 100;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.28;
+            -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 78%);
+            mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 78%);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .back-link {
+            color: #a0a0a0;
+            text-decoration: none;
+            font-size: 1rem;
+            letter-spacing: -0.5px;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #00ffcc;
+        }
+
+        @media (max-width: 1350px) {
+            #header-back {
+                left: 0rem !important;
+            }
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 4rem;
+            font-weight: 100;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 100;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            color: #e0e0e0;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 100;
+            margin-bottom: 1rem;
+        }
+
+        p, li {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #a0a0a0;
+            font-weight: 100;
+        }
+
+        /* Hero Section */
+        .hero {
+            justify-content: flex-start;
+            padding-top: 2vh;
+        }
+
+        .hero-logo {
+            height: 5rem;
+            margin-bottom: 2rem;
+            object-fit: contain;
+            mix-blend-mode: screen;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: #a0a0a0;
+            margin-bottom: 3rem;
+        }
+
+        .role-card {
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            padding-left: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .role-card h3 {
+            color: #ffffff;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+        }
+
+        /* Specs List */
+        .specs-list {
+            list-style: none;
+        }
+
+        .specs-list li {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .specs-list li:hover {
+            color: #ffffff;
+            padding-left: 1rem;
+            border-bottom-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Performance Targets */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%);
+        }
+
+        .timeline-events {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            width: 100%;
+        }
+
+        .timeline-event {
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
+            border-radius: 50%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Adjust dot position to align with line */
+        .timeline-event:nth-child(even) .timeline-dot {
+            margin: 0 auto;
+        }
+        
+        .timeline-event:nth-child(odd) .timeline-content {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+        }
+        
+        .timeline-event:nth-child(even) .timeline-content {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                top: 0;
+                left: 20px;
+                width: 1px;
+                height: 100%;
+                transform: none;
+            }
+            .timeline-events {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .timeline-event {
+                display: flex;
+                align-items: center;
+                text-align: left;
+            }
+            .timeline-dot {
+                margin: 0 2rem 0 14px;
+            }
+            .timeline-event:nth-child(even) .timeline-dot {
+                margin: 0 2rem 0 14px;
+            }
+            .timeline-event:nth-child(odd) .timeline-content,
+            .timeline-event:nth-child(even) .timeline-content {
+                position: static;
+                transform: none;
+            }
+        }
+
+
+        /* Images / Placeholders */
+        .placeholder-image {
+            width: 100%;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        
+        .placeholder-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            mix-blend-mode: screen;
+        }
+
+        .logos-container {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .logos-container .placeholder-image {
+            width: auto;
+            min-width: 150px;
+            aspect-ratio: 2/1;
+        }
+
+        /* Schematic Viewer */
+        .schematic-container {
+            width: 100%;
+            height: 60vh;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: relative;
+            cursor: grab;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .schematic-container:active {
+            cursor: grabbing;
+        }
+
+        .schematic-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: 0 0;
+        }
+
+        .schematic-content img {
+            max-width: none;
+            /* Invert colors to match dark mode: Black lines become white */
+            filter: invert(1) hue-rotate(180deg) brightness(1.2);
+            pointer-events: none; /* Let container handle events */
+        }
+        
+        .viewer-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .viewer-controls button {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .viewer-controls button:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header style="position: relative;">
+        <a href="index.html" class="back-link" id="header-back" style="font-size: 1.5rem; transform: translateY(12px); position: absolute; left: -4rem; z-index: 10;">←</a>
+        <img src="public/assets/shastra-logo-outline.png" alt="shastra." class="hero-logo" style="margin: 0; margin-left: -1.2rem; height: 5.5rem;">
+    </header>
+
+    <div class="container">
+        
+        <!-- 1. Explaining what it is -->
+        <section class="hero visible" style="padding-top: 0; margin-top: -3rem;">
+            
+            <p style="font-size: 1.2rem; color: #a0a0a0; max-width: 100%; margin-bottom: 3rem; line-height: 1.6;">
+                An electric motorcycle built from scratch by a team of 20 students at JSSATE-B.<br>
+                I was the Vice Head & led the Electrical and Electronics Team of 10 students, in my 2nd year of ECE Engineering.
+            </p>
+
+            <h2 style="margin-top: 0;">Project Overview</h2>
+            <p style="margin-bottom: 2rem; color: #a0a0a0; line-height: 1.6;">
+                The drivetrain of the vehicle was designed by me, while critical drivetrain components like the motor and batteries were co-designed by industry partners, design specifications and integration by me.
+            </p>
+            <div class="grid-2">
+                <ul class="specs-list">
+                    <li><strong>Motor:</strong> 2KW ELECNOVO PMSM motor with 92% peak efficiency.</li>
+                    <li><strong>Controller:</strong> Imported high-efficiency programmable MCU from Accelerated Systems Inc (ASI).</li>
+                    <li><strong>Battery:</strong> 30Ah 72V Lithium-Ion battery from Vivitron Energy with smart BMS.</li>
+                    <li><strong>Dashboard:</strong> AI-enabled touchscreen, powered by a RAXDA SBC. Machine learning based fault detection.</li>
+                    <li><strong>Cooling:</strong> Custom engineered part-peltier motor cooling with MIT designed compact toroidal fans.</li>
+                    <li><strong>Chassis:</strong> High-Tensile HSLA (IS 2062 E350) stainless steel with a double cradle structure.</li>
+                    <li><strong>Suspension:</strong> Long travel USD dual-shock front, mono-shock rear.</li>
+                    <li><strong>Brakes:</strong> Bybre dual-front and rear disk brakes.</li>
+                </ul>
+                <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+                    <img src="public/assets/workshop-build.jpg" alt="Motorcycle Build in Workshop" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.6) contrast(1.15); display: block; min-height: 250px;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Electrical Architecture</h2>
+            <p style="margin-bottom: 2rem; max-width: 800px;">
+                The high voltage system and drivetrain control architecture, completely designed by me. 
+                Drag to pan and use your scroll wheel to zoom in and explore the details.
+            </p>
+            <div class="schematic-container" id="schematic-container">
+                <div class="schematic-content" id="schematic-content">
+                    <img src="public/assets/schematic.svg" alt="Circuit Schematic">
+                </div>
+                <div class="viewer-controls">
+                    <button onclick="zoomOut()" title="Zoom Out">−</button>
+                    <button onclick="resetZoom()" title="Reset Zoom">↺</button>
+                    <button onclick="zoomIn()" title="Zoom In">+</button>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- 3. Explaining its achievements -->
+        <section>
+            <div style="display: flex; justify-content: center; gap: 4rem; margin-bottom: 4rem; flex-wrap: wrap;">
+                <div style="text-align: center; max-width: 300px;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem; opacity: 0.8;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                    <h3 style="font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(90deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Winner of "The Future" Award</h3>
+                    <p style="color: #a0a0a0; font-size: 1.1rem;">SIEP E-Bike Challenge 2026</p>
+                </div>
+                <div style="text-align: center; max-width: 300px;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem; opacity: 0.8;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                    <h3 style="font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(90deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Winner of "Best Teamwork" Award</h3>
+                    <p style="color: #a0a0a0; font-size: 1.1rem;">SIEP E-Bike Challenge 2026</p>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">108<span style="font-size: 1.5rem">Nm</span></div>
+                    <div class="stat-label">Peak Torque</div>
+                    <div class="stat-label" style="font-size: 0.7rem; color: #666; margin-top: 0.5rem">&gt;84% Gradability</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">90<span style="font-size: 1.5rem">km/h</span></div>
+                    <div class="stat-label">Top Speed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">&lt;4.5<span style="font-size: 1.5rem">s</span></div>
+                    <div class="stat-label">0-60 km/h</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">80-100<span style="font-size: 1.5rem">km</span></div>
+                    <div class="stat-label">Range</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">&lt;4<span style="font-size: 1.5rem">hrs</span></div>
+                    <div class="stat-label">Charging Time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">&lt;110<span style="font-size: 1.5rem">kg</span></div>
+                    <div class="stat-label">Weight</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Explaining collaboration -->
+        <section style="min-height: auto; padding-bottom: 8rem;">
+            <h2>Sponsors & Technical Partners</h2>
+            <p>Thank you to our partners who provide direct engagement with future-ready engineers.</p>
+            <div class="logos-container">
+                <img src="public/assets/dassault-logo.png" alt="Dassault Systèmes" style="height: 3rem; object-fit: contain; mix-blend-mode: screen;">
+                <div style="font-size: 1.5rem; font-weight: 100; color: #fff;">Marsilli</div>
+                <img src="public/assets/gremot-logo.png" alt="gremot" style="height: 3rem; object-fit: contain; mix-blend-mode: screen;">
+                <img src="public/assets/vivitron-logo.png" alt="Vivitron" style="height: 3rem; object-fit: contain; mix-blend-mode: screen;">
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        document.querySelectorAll('section').forEach((section) => {
+            observer.observe(section);
+        });
+
+        // Schematic Pan and Zoom logic
+        const container = document.getElementById('schematic-container');
+        const content = document.getElementById('schematic-content');
+        
+        if (container && content) {
+            let scale = 1;
+            let pointX = 0;
+            let pointY = 0;
+            let start = { x: 0, y: 0 };
+            let isPanning = false;
+
+            function setTransform() {
+                content.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+            }
+
+            container.onmousedown = function (e) {
+                e.preventDefault();
+                start = { x: e.clientX - pointX, y: e.clientY - pointY };
+                isPanning = true;
+            };
+
+            container.onmouseup = function (e) {
+                isPanning = false;
+            };
+
+            container.onmouseleave = function (e) {
+                isPanning = false;
+            };
+
+            container.onmousemove = function (e) {
+                e.preventDefault();
+                if (!isPanning) return;
+                pointX = (e.clientX - start.x);
+                pointY = (e.clientY - start.y);
+                setTransform();
+            };
+
+            container.onwheel = function (e) {
+                e.preventDefault();
+                const rect = container.getBoundingClientRect();
+                const xs = (e.clientX - rect.left - pointX) / scale;
+                const ys = (e.clientY - rect.top - pointY) / scale;
+                
+                let delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+                if (delta > 0) {
+                    scale *= 1.1;
+                } else {
+                    scale /= 1.1;
+                }
+                
+                scale = Math.max(0.1, Math.min(scale, 10));
+
+                pointX = (e.clientX - rect.left) - xs * scale;
+                pointY = (e.clientY - rect.top) - ys * scale;
+
+                setTransform();
+            };
+
+            window.zoomIn = function() {
+                const centerX = container.clientWidth / 2;
+                const centerY = container.clientHeight / 2;
+                const xs = (centerX - pointX) / scale;
+                const ys = (centerY - pointY) / scale;
+                scale *= 1.2;
+                scale = Math.min(scale, 10);
+                pointX = centerX - xs * scale;
+                pointY = centerY - ys * scale;
+                setTransform();
+            };
+
+            window.zoomOut = function() {
+                const centerX = container.clientWidth / 2;
+                const centerY = container.clientHeight / 2;
+                const xs = (centerX - pointX) / scale;
+                const ys = (centerY - pointY) / scale;
+                scale /= 1.2;
+                scale = Math.max(scale, 0.1);
+                pointX = centerX - xs * scale;
+                pointY = centerY - ys * scale;
+                setTransform();
+            };
+            
+            window.resetZoom = function() {
+                scale = 1;
+                pointX = 0;
+                pointY = 0;
+                setTransform();
+            }
+        }
+    </script>
+</body>
+</html>
