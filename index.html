@@ -20,21 +20,40 @@
         body {
             /* Switching framework typography to Helvetica */
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 100;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding: 2rem 2rem 0 0.75rem;
+            position: relative;
             text-align: left;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.28;
+            -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 78%);
+            mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 78%);
         }
 
         .top-content {
             max-width: 850px;
             padding-left: 0;
+            position: relative;
+            z-index: 1;
         }
 
         .name {
             font-size: 1.8rem;
-            font-weight: 400;
+            font-weight: 100;
             line-height: 1.1;
             margin-bottom: 0.5rem;
             /* Pure white profile */
@@ -60,10 +79,78 @@
             color: #ffffff;
         }
 
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            min-height: 3rem;
+            padding-left: 0.75rem;
+            padding-right: 2rem;
+            transform: translateY(-20%);
+        }
+
+        .brand-assets {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.35rem 1.15rem;
+            justify-content: flex-start;
+            opacity: 0.36;
+            pointer-events: none;
+        }
+
+        .brand-assets img {
+            display: block;
+            width: auto;
+            max-width: min(30vw, 170px);
+            height: 1.6rem;
+            filter: grayscale(1);
+            object-fit: contain;
+        }
+
+        .brand-assets .brand-refinite {
+            height: 1.45rem;
+        }
+
+        .brand-assets .brand-shastra {
+            height: 1.45rem;
+            max-width: min(27vw, 170px);
+        }
+
+        .brand-assets .brand-be-glasses {
+            height: 1.45rem;
+            max-width: min(30vw, 185px);
+            transform: translateY(2%);
+        }
+
+        .brand-assets .brand-finite-social {
+            height: 1.65rem;
+            max-width: min(32vw, 215px);
+            transform: translateY(18%);
+        }
+
+        .footer-meta {
+            flex: 0 0 auto;
+            color: #a0a0a0;
+            font-size: 0.8rem;
+            letter-spacing: -0.2px;
+            line-height: 1;
+            opacity: 0.36;
+            white-space: nowrap;
+        }
+
+        .bottom-content {
+            width: 100vw;
+            margin-left: -0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
         /* LED Display Screen Framework */
 
         .transit-display-container {
-            height: 30vh;
+            height: 24vh;
             width: 100vw;
             background-color: #000000;
             display: flex;
@@ -91,9 +178,20 @@
         <div class="item">the finite social</div>
     </div>
 </div>
-<div class="transit-display-container">
+<div class="bottom-content">
+    <div class="transit-display-container">
 
-    <canvas id="ledCanvas"></canvas>
+        <canvas id="ledCanvas"></canvas>
+    </div>
+    <div class="footer-content">
+        <div class="brand-assets" aria-hidden="true">
+            <img class="brand-refinite" src="public/assets/refinite-logo-bw.png" alt="">
+            <img class="brand-shastra" src="public/assets/shastra-logo-bw.png" alt="">
+            <img class="brand-be-glasses" src="public/assets/be-glasses-logo-bw.png" alt="">
+            <img class="brand-finite-social" src="public/assets/finite-social-bw.png" alt="">
+        </div>
+        <div class="footer-meta">&copy; 2026 suhasnanda.com</div>
+    </div>
 </div>
 
 <script>
