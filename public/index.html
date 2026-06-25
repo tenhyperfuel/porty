@@ -45,20 +45,39 @@
         }
 
         .top-content {
-            max-width: 850px;
+            width: 100%;
             padding-left: 0;
             position: relative;
             z-index: 1;
+        }
+
+        .name-wrapper {
+            display: flex;
+            align-items: baseline;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
         }
 
         .name {
             font-size: 1.8rem;
             font-weight: 100;
             line-height: 1.1;
-            margin-bottom: 0.5rem;
             /* Pure white profile */
             color: #ffffff;
             letter-spacing: -1px;
+        }
+
+        .profile-link {
+            font-size: 1rem;
+            color: #666666;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            transition: color 0.2s ease;
+        }
+
+        .profile-link:hover {
+            color: #a0a0a0;
         }
 
         .items-list {
@@ -197,13 +216,19 @@
 <body>
 
 <div class="top-content">
-    <div class="name">suhas nanda kollipara</div>
+    <div class="name-wrapper">
+        <div class="name">suhas nanda kollipara</div>
+        <div style="display: flex; gap: 1rem; align-items: baseline; margin-left: auto;">
+            <a href="mailto:me@suhasnanda.com" class="profile-link">me@suhasnanda.com</a>
+            <a href="https://www.linkedin.com/in/suhasnanda/" target="_blank" rel="noopener noreferrer" class="profile-link">linkedin ↗</a>
+        </div>
+    </div>
     
     <div class="items-list">
-        <div class="item">refinite</div>
+        <a href="https://refinite.tech/" target="_blank" rel="noopener noreferrer" class="item" style="text-decoration: none;">refinite ↗</a>
         <a href="shastra.html" class="item" style="text-decoration: none;">shastra - electric motorbike</a>
         <a href="be-glasses.html" class="item" style="text-decoration: none;">be.glasses - intelligent glasses</a>
-        <div class="item">the finite social</div>
+        <div class="item">the finite social ↗</div>
     </div>
 </div>
 <div class="bottom-content">
