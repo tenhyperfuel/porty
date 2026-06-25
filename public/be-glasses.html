@@ -13,31 +13,32 @@
         }
         
         .model-corner-left {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 300px;
-            height: 300px;
-            z-index: 90;
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 400px;
+            height: 400px;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.8;
         }
 
         .model-corner-right {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            height: 300px;
-            z-index: 90;
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 400px;
+            height: 400px;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.8;
         }
 
         @media (max-width: 1000px) {
             .model-corner-left, .model-corner-right {
-                width: 150px;
-                height: 150px;
-                opacity: 0.3;
-            }
-            .model-corner-left:hover, .model-corner-right:hover {
-                opacity: 1;
+                width: 250px;
+                height: 250px;
+                opacity: 0.4;
             }
         }
         /* Base Styles from index.html / adapted for be.glasses */
@@ -54,6 +55,7 @@
             font-weight: 100;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            position: relative;
         }
 
         body::before {
@@ -76,6 +78,8 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         header {
