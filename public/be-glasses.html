@@ -37,10 +37,22 @@
         }
 
         @media (max-width: 1000px) {
-            .model-corner-left, .model-corner-right {
+            .model-corner-left {
                 width: 250px;
                 height: 250px;
                 opacity: 0.4;
+                bottom: -80px;
+                left: -30px;
+            }
+            .model-corner-right {
+                width: 250px;
+                height: 250px;
+                opacity: 0.4;
+                top: -80px;
+                right: -30px;
+            }
+            .hero-logo {
+                height: 2.5rem !important;
             }
         }
         /* Base Styles from index.html / adapted for be.glasses */
@@ -115,9 +127,7 @@
         }
 
         @media (max-width: 1350px) {
-            #header-back {
-                left: 0rem !important;
-            }
+            /* header back is now managed via flexbox */
         }
 
         section {
@@ -253,7 +263,7 @@
     </div>
 
     <header style="position: relative;">
-        <a href="index.html" class="back-link" id="header-back" style="font-size: 1.5rem; top: 50%; transform: translateY(-50%); position: absolute; left: -4rem; z-index: 10;">←</a>
+        <a href="index.html" class="back-link" id="header-back" style="font-size: 1.5rem; margin-right: 1rem; z-index: 10;">←</a>
         <img src="assets/beglasses-logo.png" class="hero-logo" alt="be.glasses" style="margin-bottom: 0;">
     </header>
 
