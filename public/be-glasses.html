@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>be.glasses | empowering independence</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <style>
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            --poster-color: transparent;
+        }
+        
+        .model-corner-left {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 300px;
+            height: 300px;
+            z-index: 90;
+        }
+
+        .model-corner-right {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 300px;
+            z-index: 90;
+        }
+
+        @media (max-width: 1000px) {
+            .model-corner-left, .model-corner-right {
+                width: 150px;
+                height: 150px;
+                opacity: 0.3;
+            }
+            .model-corner-left:hover, .model-corner-right:hover {
+                opacity: 1;
+            }
+        }
+        /* Base Styles from index.html / adapted for be.glasses */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            background-color: #b32c2b; /* Darker Logo Red */
+            color: #ffffff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 100;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.28;
+            -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 78%);
+            mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 78%);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(179,44,43,0.95) 0%, rgba(179,44,43,0) 100%);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .back-link {
+            color: #a0a0a0;
+            text-decoration: none;
+            font-size: 1rem;
+            letter-spacing: -0.5px;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #1e1e1e; /* Dark accent */
+        }
+
+        @media (max-width: 1350px) {
+            #header-back {
+                left: 0rem !important;
+            }
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 4rem;
+            font-weight: 100;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 100;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            color: #f0f0f0;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: #1e1e1e; /* Dark accent */
+        }
+
+        p, li {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cccccc;
+            font-weight: 100;
+        }
+
+        /* Hero Section */
+        .hero {
+            justify-content: flex-start;
+            padding-top: 2vh;
+        }
+
+        .hero-logo {
+            height: 4rem;
+            object-fit: contain;
+            margin: 0;
+            margin-left: -0.5rem;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+        }
+
+        /* Specs List */
+        .specs-list {
+            list-style: none;
+        }
+
+        .specs-list li {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .specs-list li:hover {
+            color: #ffffff;
+            padding-left: 1rem;
+            border-bottom-color: #1e1e1e;
+        }
+
+        /* Info Cards */
+        .info-card {
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(30, 30, 30, 0.5); /* Hover tint dark */
+        }
+
+        .info-card h3 {
+            color: #ffffff;
+            font-weight: 300;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="model-corner-left">
+        <model-viewer src="assets/be_glasses_left.glb" auto-rotate camera-controls shadow-intensity="1" environment-image="neutral" exposure="1" interaction-prompt="none"></model-viewer>
+    </div>
+    
+    <div class="model-corner-right">
+        <model-viewer src="assets/be_glasses_right.glb" auto-rotate camera-controls shadow-intensity="1" environment-image="neutral" exposure="1" interaction-prompt="none"></model-viewer>
+    </div>
+
+    <header style="position: relative;">
+        <a href="index.html" class="back-link" id="header-back" style="font-size: 1.5rem; top: 50%; transform: translateY(-50%); position: absolute; left: -4rem; z-index: 10;">←</a>
+        <img src="assets/beglasses-logo.png" class="hero-logo" alt="be.glasses" style="margin-bottom: 0;">
+    </header>
+
+    <div class="container">
+        
+        <!-- 2. Architecture -->
+        <section class="hero visible" style="padding-top: 0; margin-top: -1rem;">
+            <p style="margin-bottom: 2rem; font-size: 1.2rem; line-height: 1.6;">
+                be.glasses are a tool that helps blind/partially visually impaired individuals lead an independent life. Imagine if a person could identify objects in their day-to-day life and understand the value of currency notes. That creates a profound impact.
+            </p>
+            <h2>Hardware Architecture</h2>
+            <div class="grid-2">
+                <ul class="specs-list" style="margin-bottom: 3rem;">
+                    <li><strong style="color: #1e1e1e;">Raspberry Pi Zero 2W:</strong> A single-board computer (SBC) with a 1GHz quad-core CPU and 512MB RAM. Runs machine learning algorithms and processes images.</li>
+                    <li><strong style="color: #1e1e1e;">Pi Camera v1.3 - 5MP:</strong> Captures real-time images of the environment and feeds data into computer vision models.</li>
+                    <li><strong style="color: #1e1e1e;">Battery Management System:</strong> 1000mAh Li-Po Battery + BMS Chip + Boost Converter. Powers the glasses and steps voltage up to 5V safely.</li>
+                    <li><strong style="color: #1e1e1e;">Headset & Microphone:</strong> Bluetooth headphones for Text-to-Speech (TTS) output, and a MAK Wireless USB Mic to capture voice commands.</li>
+                    <li><strong style="color: #1e1e1e;">3D Printed Chassis:</strong> Made of PET filament ensuring a lightweight and durable structure that houses all components in a wearable format.</li>
+                </ul>
+                <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 3rem; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <img src="assets/working-model.jpg" alt="3D Printed Working Model" style="width: 100%; height: auto; display: block; filter: contrast(1.1);">
+                </div>
+            </div>
+
+            <h2 style="margin-top: 2rem;">System Principles</h2>
+            <div class="grid-2">
+                <div class="info-card">
+                    <h3>Optics & Vision</h3>
+                    <p>The camera captures visual data, which is processed by the Raspberry Pi using computer vision algorithms (Efficient DET & custom ML models). Pytesseract and Google Vision handle Optical Character Recognition (OCR) to extract text.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Acoustics & UI</h3>
+                    <p>Controlled entirely via voice commands using Speech Recognition. The results are converted to audio using Text-to-Speech (TTS) algorithms and played through a Bluetooth headset.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Applications -->
+        <section>
+            <h2>Applications of the Device</h2>
+            <div class="grid-3" style="margin-top: 1rem;">
+                <div class="info-card">
+                    <h3 style="color: #1e1e1e;">Object Recognition</h3>
+                    <p>Provides audio descriptions of over 100+ real world objects, making it incredibly useful for day-to-day object recognition, social interaction, and safety.</p>
+                </div>
+                <div class="info-card">
+                    <h3 style="color: #1e1e1e;">Support & Safety</h3>
+                    <p>Enabled by a human presence detection algorithm, it alerts the user if a human enters or is present in the same room, potentially saving the individual wearing the device in emergencies.</p>
+                </div>
+                <div class="info-card">
+                    <h3 style="color: #1e1e1e;">Accessibility</h3>
+                    <p>Since most public spaces are not designed with visually impaired individuals in mind, the text extraction algorithm drastically improves the overall public experience, fostering societal inclusion.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Conclusion & Team -->
+        <section style="padding-bottom: 5rem;">
+            <h2>Conclusion & Future Work</h2>
+            <p style="margin-bottom: 1.5rem; max-width: 900px;">
+                As we wrap up, we’ve designed detailed 3D models for the glasses, sourced core electronics, and significantly progressed our software for object detection and navigation algorithms.
+            </p>
+            <p style="margin-bottom: 3rem; max-width: 900px; border-left: 2px solid #1e1e1e; padding-left: 1rem;">
+                <em>“Together, we’re not just building glasses; we’re building independence.”</em>
+            </p>
+            
+            <h3 style="margin-bottom: 1rem;">Future Scope</h3>
+            <ul style="list-style-type: square; margin-left: 1.5rem; margin-bottom: 4rem; color: #cccccc;">
+                <li style="margin-bottom: 0.5rem;">Improvement of user-friendliness and re-formatting the 3D model for a better fit.</li>
+                <li style="margin-bottom: 0.5rem;">Making the codebase more robust with start/stop commands and error handling.</li>
+                <li style="margin-bottom: 0.5rem;">Size reduction, hardware optimization, and cost reduction via alternative SBCs.</li>
+                <li style="margin-bottom: 0.5rem;">Introducing new custom-designed ML models for obstacle detection, currency detection, and facial detection.</li>
+            </ul>
+
+            <div style="text-align: center; margin-top: 2rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <img src="assets/beglasses-logo.png" class="hero-logo" alt="be.glasses" style="margin: 0 auto 1rem auto; height: 3rem;">
+                <p style="color: #a0a0a0; font-size: 1.2rem;">Team: Utsav - Suhas - Arya</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        document.querySelectorAll('section').forEach((section) => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
