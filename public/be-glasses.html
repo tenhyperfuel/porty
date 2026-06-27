@@ -75,6 +75,7 @@
         body {
             overflow-x: hidden;
             padding: 2rem 2rem 0 0.75rem;
+            position: relative;
         }
 
         body::before {
@@ -251,7 +252,7 @@
 </head>
 <body>
 
-    <div style="position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
+    <div style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <div class="model-corner-left">
             <model-viewer src="assets/be_glasses_left.glb" auto-rotate camera-controls shadow-intensity="1" environment-image="neutral" exposure="1" interaction-prompt="none" style="pointer-events: auto;"></model-viewer>
         </div>
