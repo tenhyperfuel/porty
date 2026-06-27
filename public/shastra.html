@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
     <title>shastra. | engineering the future</title>
     <style>
         /* Base Styles from index.html */
@@ -19,6 +20,10 @@
             font-weight: 100;
             overflow-x: hidden;
             scroll-behavior: smooth;
+        }
+
+        body {
+            padding: 2rem 2rem 0 0.75rem;
         }
 
         body::before {
@@ -38,22 +43,18 @@
 
         /* Layout */
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 2rem;
+            width: 100%;
+            padding: 0;
+            margin-top: 1rem;
         }
 
         header {
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0;
+            position: relative;
             z-index: 100;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-            max-width: 1200px;
-            margin: 0 auto;
             width: 100%;
         }
 
@@ -130,6 +131,7 @@
             margin-bottom: 2rem;
             object-fit: contain;
             mix-blend-mode: screen;
+            view-transition-name: shastra-logo;
         }
 
         .tagline {
@@ -413,14 +415,14 @@
 <body>
 
     <header style="position: relative;">
-        <a href="index.html" class="back-link" id="header-back" style="font-size: 1.5rem; transform: translateY(12px); position: absolute; left: -4rem; z-index: 10;">←</a>
-        <img src="assets/shastra-logo-outline.png" alt="shastra." class="hero-logo" style="margin: 0; margin-left: -1.2rem; height: 5.5rem;">
+        <a href="index.html" class="back-link" id="header-back" style="position: absolute; top: -1.5rem; left: 0; font-size: 1.5rem; color: #a0a0a0; text-decoration: none; z-index: 10;">←</a>
+        <img src="assets/shastra-logo-outline.png" alt="shastra." class="hero-logo" style="margin-bottom: 2rem; margin-top: 1.5rem; margin-left: -0.8rem;">
     </header>
 
     <div class="container">
         
         <!-- 1. Explaining what it is -->
-        <section class="hero visible" style="padding-top: 0; margin-top: -3rem;">
+        <section class="hero visible" style="padding-top: 0; margin-top: 0;">
             
             <p style="font-size: 1.2rem; color: #a0a0a0; max-width: 100%; margin-bottom: 3rem; line-height: 1.6;">
                 An electric motorcycle built from scratch by a team of 20 students at JSSATE-B.<br>
@@ -470,16 +472,16 @@
 
         <!-- 3. Explaining its achievements -->
         <section>
-            <div style="display: flex; justify-content: center; gap: 4rem; margin-bottom: 4rem; flex-wrap: wrap;">
-                <div style="text-align: center; max-width: 300px;">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem; opacity: 0.8;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-                    <h3 style="font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(90deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Winner of "The Future" Award</h3>
-                    <p style="color: #a0a0a0; font-size: 1.1rem;">SIEP E-Bike Challenge 2026</p>
+            <div style="display: flex; justify-content: center; gap: 4rem; margin-bottom: 4rem; flex-wrap: wrap; text-align: center;">
+                <div style="max-width: 300px; display: flex; flex-direction: column; align-items: center;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: 100; color: #ffffff; letter-spacing: -0.5px;">Winner of "The Future" Award</h3>
+                    <p style="color: #a0a0a0; font-size: 1.1rem; font-weight: 100;">SIEP E-Bike Challenge 2026</p>
                 </div>
-                <div style="text-align: center; max-width: 300px;">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem; opacity: 0.8;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-                    <h3 style="font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(90deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Winner of "Best Teamwork" Award</h3>
-                    <p style="color: #a0a0a0; font-size: 1.1rem;">SIEP E-Bike Challenge 2026</p>
+                <div style="max-width: 300px; display: flex; flex-direction: column; align-items: center;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: 100; color: #ffffff; letter-spacing: -0.5px;">Winner of "Best Teamwork" Award</h3>
+                    <p style="color: #a0a0a0; font-size: 1.1rem; font-weight: 100;">SIEP E-Bike Challenge 2026</p>
                 </div>
             </div>
             <div class="stats-grid">

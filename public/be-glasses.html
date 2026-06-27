@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>be.glasses | empowering independence</title>
+    <meta name="view-transition" content="same-origin">
+    <title>be.glasses | visual aid</title>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <style>
         model-viewer {
@@ -63,18 +64,17 @@
             padding: 0;
         }
 
-        html {
-            scroll-behavior: smooth;
-            background-color: #b32c2b;
-        }
-        
-        body {
-            background-color: #b32c2b; /* Darker Logo Red */
+        html, body {
+            background-color: #ba2f2d; /* Primary deep red matching the logo */
             color: #ffffff;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-weight: 100;
             overflow-x: hidden;
-            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            padding: 2rem 2rem 0 0.75rem;
         }
 
         body::before {
@@ -94,24 +94,18 @@
 
         /* Layout */
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 2rem;
-            position: relative;
-            z-index: 10;
+            width: 100%;
+            padding: 0;
+            margin-top: 1rem;
         }
 
         header {
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0;
+            position: relative;
             z-index: 100;
-            background: transparent;
-            max-width: 1200px;
-            margin: 0 auto;
             width: 100%;
         }
 
@@ -189,6 +183,7 @@
             margin-left: -0.5rem;
             margin-bottom: 2rem;
             display: block;
+            view-transition-name: beglasses-logo;
         }
 
         /* Grid Layouts */
@@ -267,24 +262,17 @@
     </div>
 
     <header style="position: relative;">
-        <a href="index.html" class="back-link" id="header-back" style="font-size: 1.5rem; margin-right: 1rem; z-index: 10;">←</a>
-        <img src="assets/beglasses-logo.png" class="hero-logo" alt="be.glasses" style="margin-bottom: 0;">
+        <a href="index.html" class="back-link" id="header-back" style="position: absolute; top: -1.5rem; left: 0; font-size: 1.5rem; color: rgba(255,255,255,0.7); text-decoration: none; z-index: 10;">←</a>
+        <img src="assets/beglasses-logo.png" class="hero-logo" alt="be.glasses" style="margin-bottom: 1rem; margin-top: 2.5rem;">
     </header>
 
     <div class="container">
         
         <!-- 2. Architecture -->
-        <section class="hero visible" style="padding-top: 0; margin-top: -1rem;">
+        <section class="hero visible" style="padding-top: 0; margin-top: 0;">
             <p style="margin-bottom: 2rem; font-size: 1.2rem; line-height: 1.6;">
                 be.glasses are a tool that helps blind/partially visually impaired individuals lead an independent life. Imagine if a person could identify objects in their day-to-day life and understand the value of currency notes. That creates a profound impact. Built by me in 1st semester of ECE Engineering.
             </p>
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; background: rgba(0,0,0,0.15); padding: 1rem 1.5rem; border-radius: 12px; width: fit-content; border: 1px solid rgba(255,255,255,0.1);">
-                <div style="font-size: 2.5rem;">🏆</div>
-                <div>
-                    <div style="font-weight: 300; font-size: 1.2rem; color: #ffffff;">1st Place Pragyan Ideathon</div>
-                    <div style="font-size: 0.9rem; color: #cccccc; margin-top: 0.2rem; font-weight: 100;">30,000 INR prize money</div>
-                </div>
-            </div>
             <h2>Hardware Architecture</h2>
             <div class="grid-2">
                 <ul class="specs-list" style="margin-bottom: 3rem;">
@@ -314,6 +302,11 @@
 
         <!-- 3. Applications -->
         <section>
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; margin-bottom: 4rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="3rem" height="3rem" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                <div style="font-weight: 100; font-size: 1.8rem; color: #ffffff; letter-spacing: -0.5px; margin-bottom: 0.5rem;">1st Place "Pragyan" Ideathon</div>
+                <div style="font-size: 1.1rem; color: #a0a0a0; font-weight: 100;">30,000 INR prize money</div>
+            </div>
             <h2>Applications of the Device</h2>
             <div class="grid-3" style="margin-top: 1rem;">
                 <div class="info-card">
