@@ -180,58 +180,7 @@
             flex-direction: column;
             padding: 2.25rem 2.5rem 1.75rem 2.5rem;
             z-index: 20;
-            opacity: 0.15; /* faintly visible behind hero */
-            will-change: opacity;
-            pointer-events: none;
-        }
-
-        .schematic-stage.active {
-            pointer-events: auto;
-        }
-
-        /* New: Background schematic behind hero */
-        .schematic-bg {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 5;
-            opacity: 0.15; /* faded initially */
-        }
-
-        .schematic-bg-img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: invert(1) hue-rotate(180deg) brightness(1.1);
-        }
-
-        .schematic-viewport {
-            flex: 1 1 auto;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-            background: transparent;
-            border: none;
-            outline: none;
-            /* Extend to full horizontal edge */
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-        }
-        .schematic-stage {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            padding: 2.25rem 2.5rem 1.75rem 2.5rem;
-            z-index: 20;
-            opacity: 0.15; /* faintly visible behind hero */
+            opacity: 0;
             will-change: opacity;
             pointer-events: none;
         }
@@ -480,42 +429,6 @@
     <a href="index.html" class="back-link" aria-label="Back to overview">←</a>
 
     <!-- Interactive Top Stage: Scroll-Driven Cinematic Presentation -->
-    <div id="presentation-track" class="presentation-track">
-        <div class="presentation-sticky">
-
-            
-            
-
-            <!-- Stage 1: Hero Stage -->
-            <div id="hero-stage" class="hero-stage">
-                <div class="hero-inner">
-                    <img src="assets/shastra-logo-outline.png" alt="shastra." class="hero-logo-img">
-                    <div class="hero-subtitle">electric dirtbike</div>
-                    <div class="hero-prompt">
-                        <span class="prompt-text">scroll to interact</span>
-                        <span class="prompt-arrow">↓</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stage 2 & 3: Schematic Presentation Stage -->
-            <div id="schematic-stage" class="schematic-stage">
-                <div class="schematic-header">
-                    <div class="stage-meta" id="stage-meta">overview</div>
-                    <h1 class="stage-title" id="stage-title">complex electrical design</h1>
-                </div>
-
-                <div class="schematic-viewport" id="schematic-viewport">
-                    <div class="schematic-canvas" id="schematic-canvas">
-                        <img id="schematic-img" src="assets/schematic.svg" alt="Complete KiCad Circuit Schematic">
-                    </div>
-                    <!-- Radial Vignette Spotlight -->
-                    <div class="schematic-vignette" id="schematic-vignette"></div>
-                </div>
-            </div>
-
-        </div>
-    </div>
     <div id="presentation-track" class="presentation-track">
         <div class="presentation-sticky">
 
@@ -875,9 +788,6 @@
                 }
 
                 // Apply Vignette Opacity
--                vignette.style.opacity = state.vig.toFixed(3);
-+                // No vignette effect; keep transparent
-+                vignette.style.opacity = '0';
                 vignette.style.opacity = state.vig.toFixed(3);
 
                 // Update Header Titles
