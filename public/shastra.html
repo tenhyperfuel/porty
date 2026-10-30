@@ -6,7 +6,7 @@
     <meta name="view-transition" content="same-origin">
     <title>shastra. | engineering the future</title>
     <style>
-        /* Base Styles from index.html */
+        /* Base Reset & Core Styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -22,10 +22,13 @@
         }
 
         body {
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
-            padding: 2rem 2rem 0 0.75rem;
+            width: 100%;
         }
 
+        /* Subtle Background Blueprint Grid */
         body::before {
             content: "";
             position: fixed;
@@ -33,80 +36,289 @@
             z-index: -1;
             pointer-events: none;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
             background-size: 40px 40px;
-            opacity: 0.28;
-            -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 78%);
-            mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 78%);
+            opacity: 0.35;
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 30%, transparent 95%);
+            mask-image: radial-gradient(circle at 50% 50%, #000 30%, transparent 95%);
         }
 
-        /* Layout */
-        .container {
-            width: 100%;
-            padding: 0;
-            margin-top: 1rem;
-        }
-
-        header {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 0;
-            position: relative;
-            z-index: 100;
-            width: 100%;
-        }
-
+        /* Persistent Navigation Back Link */
         .back-link {
-            color: #a0a0a0;
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            font-size: 1.6rem;
+            color: #888888;
             text-decoration: none;
-            font-size: 1rem;
-            letter-spacing: -0.5px;
-            transition: color 0.2s ease;
+            z-index: 1000;
+            transition: color 0.25s ease, transform 0.25s ease;
+            display: inline-block;
+            line-height: 1;
         }
 
         .back-link:hover {
             color: #00ffcc;
+            transform: translateX(-3px);
         }
 
-        @media (max-width: 1350px) {
-            #header-back {
-                left: 0rem !important;
+        @media (max-width: 768px) {
+            .back-link {
+                top: 1.25rem;
+                left: 1.25rem;
+                font-size: 1.4rem;
             }
         }
 
-        section {
+        /* ==========================================================================
+           Interactive Presentation Track (Full-Viewport Sticky Controller)
+           ========================================================================== */
+        .presentation-track {
+            position: relative;
+            width: 100%;
+            height: 650vh; /* Generous timeline for leisurely, cinematic interaction */
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-sticky {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000000;
+            z-index: 10;
+        }
+
+        /* Stage 1: Hero Stage (Logo, electric dirtbike, scroll to interact) */
+        .hero-stage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 30;
+            opacity: 1;
+            will-change: opacity, transform;
+            pointer-events: auto;
+            transition: opacity 0.1s linear;
+        }
+
+        .hero-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            max-width: 90vw;
+        }
+
+        .hero-logo-img {
+            width: clamp(240px, 32vw, 360px);
+            height: auto;
+            object-fit: contain;
+            mix-blend-mode: screen;
+            margin-bottom: 1.25rem;
+            user-select: none;
+            -webkit-user-drag: none;
+            view-transition-name: shastra-logo;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+            color: #a0a0a0;
+            font-weight: 100;
+            letter-spacing: -0.5px;
+            margin-bottom: 3.5rem;
+        }
+
+        .hero-prompt {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: default;
+            user-select: none;
+        }
+
+        .prompt-text {
+            font-size: 0.85rem;
+            color: #707070;
+            letter-spacing: 2px;
+            font-weight: 200;
+            text-transform: lowercase;
+        }
+
+        .prompt-arrow {
+            font-size: 1.35rem;
+            color: #888888;
+            animation: bounceArrow 2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.45;
+            }
+            50% {
+                transform: translateY(7px);
+                opacity: 1;
+                color: #00ffcc;
+            }
+        }
+
+        /* Stage 2 & 3: Schematic Presentation Stage (Overview & Module Panning) */
+        .schematic-stage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 2.25rem 2.5rem 1.75rem 2.5rem;
+            z-index: 20;
+            opacity: 0;
+            will-change: opacity;
+            pointer-events: none;
+        }
+
+        .schematic-stage.active {
+            pointer-events: auto;
+        }
+
+        .schematic-header {
+            flex: 0 0 auto;
+            padding-left: 3rem; /* Leave room for fixed back button */
+            margin-bottom: 0.85rem;
+            min-height: 4.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stage-meta {
+            font-size: 0.8rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #00ffcc;
+            margin-bottom: 0.35rem;
+            font-weight: 300;
+            font-family: monospace;
+            opacity: 1;
+            transition: opacity 0.25s ease;
+        }
+
+        .stage-title {
+            font-size: clamp(1.4rem, 2.5vw, 2.4rem);
+            font-weight: 100;
+            letter-spacing: -1px;
+            color: #ffffff;
+            margin: 0;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        /* Borderless Viewport */
+        .schematic-viewport {
+            flex: 1 1 auto;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+
+        .schematic-canvas {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: 0 0;
+            will-change: transform;
+        }
+
+        .schematic-canvas img {
+            width: 1587.36px;
+            height: 1122.53px;
+            max-width: none;
+            filter: invert(1) hue-rotate(180deg) brightness(1.22);
+            pointer-events: none;
+            display: block;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        /* Vignette Spotlight: Highlights center in focus, dims outer area into black */
+        .schematic-vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(0, 0, 0, 0) 18%, 
+                rgba(0, 0, 0, 0.45) 40%, 
+                rgba(0, 0, 0, 0.82) 65%, 
+                #000000 88%
+            );
+            opacity: 0;
+            will-change: opacity;
+            z-index: 15;
+            transition: opacity 0.15s linear;
+        }
+
+        @media (max-width: 768px) {
+            .schematic-stage {
+                padding: 4.5rem 1.25rem 1.25rem 1.25rem;
+            }
+            .schematic-header {
+                padding-left: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* ==========================================================================
+           Normal Scrolling Page (Sections Placed Directly Below Presentation)
+           ========================================================================== */
+        .normal-scroll-container {
+            position: relative;
+            z-index: 40;
+            background: #000000;
+            width: 100%;
+            padding: 4rem 2.5rem 8rem 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .normal-section {
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 5rem 0;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        section.visible {
+        .normal-section.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Typography */
-        h1 {
-            font-size: 4rem;
-            font-weight: 100;
-            letter-spacing: -2px;
-            margin-bottom: 1rem;
-        }
-
+        /* Typography & Components in Normal Sections */
         h2 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 3.5vw, 2.5rem);
             font-weight: 100;
             letter-spacing: -1px;
             margin-bottom: 2rem;
             color: #e0e0e0;
         }
-        
+
         h3 {
             font-size: 1.5rem;
             font-weight: 100;
@@ -120,37 +332,6 @@
             font-weight: 100;
         }
 
-        /* Hero Section */
-        .hero {
-            justify-content: flex-start;
-            padding-top: 2vh;
-        }
-
-        .hero-logo {
-            height: 5rem;
-            margin-bottom: 2rem;
-            object-fit: contain;
-            mix-blend-mode: screen;
-            view-transition-name: shastra-logo;
-        }
-
-        .tagline {
-            font-size: 1.5rem;
-            color: #a0a0a0;
-            margin-bottom: 3rem;
-        }
-
-        .role-card {
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-            padding-left: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .role-card h3 {
-            color: #ffffff;
-        }
-
-        /* Grid Layouts */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -163,8 +344,9 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-            h1 { font-size: 3rem; }
-            h2 { font-size: 2rem; }
+            .normal-scroll-container {
+                padding: 3rem 1.25rem 6rem 1.25rem;
+            }
         }
 
         /* Specs List */
@@ -173,7 +355,7 @@
         }
 
         .specs-list li {
-            padding: 1.5rem 0;
+            padding: 1.4rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             cursor: default;
@@ -181,11 +363,11 @@
 
         .specs-list li:hover {
             color: #ffffff;
-            padding-left: 1rem;
-            border-bottom-color: rgba(255, 255, 255, 0.5);
+            padding-left: 0.8rem;
+            border-bottom-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* Performance Targets */
+        /* Performance Targets Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -214,246 +396,28 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 4rem 0;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-50%);
-        }
-
-        .timeline-events {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            width: 100%;
-        }
-
-        .timeline-event {
-            text-align: center;
-            position: relative;
-            flex: 1;
-        }
-
-        .timeline-dot {
-            width: 12px;
-            height: 12px;
-            background: #ffffff;
-            border-radius: 50%;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Adjust dot position to align with line */
-        .timeline-event:nth-child(even) .timeline-dot {
-            margin: 0 auto;
-        }
-        
-        .timeline-event:nth-child(odd) .timeline-content {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: max-content;
-        }
-        
-        .timeline-event:nth-child(even) .timeline-content {
-            position: absolute;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: max-content;
-        }
-
-        @media (max-width: 768px) {
-            .timeline::before {
-                top: 0;
-                left: 20px;
-                width: 1px;
-                height: 100%;
-                transform: none;
-            }
-            .timeline-events {
-                flex-direction: column;
-                gap: 2rem;
-            }
-            .timeline-event {
-                display: flex;
-                align-items: center;
-                text-align: left;
-            }
-            .timeline-dot {
-                margin: 0 2rem 0 14px;
-            }
-            .timeline-event:nth-child(even) .timeline-dot {
-                margin: 0 2rem 0 14px;
-            }
-            .timeline-event:nth-child(odd) .timeline-content,
-            .timeline-event:nth-child(even) .timeline-content {
-                position: static;
-                transform: none;
-            }
-        }
-
-
-        /* Images / Placeholders */
-        .placeholder-image {
-            width: 100%;
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.9rem;
-            text-align: center;
-            background: rgba(0,0,0,0.5);
-            overflow: hidden;
-        }
-        
-        .placeholder-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            mix-blend-mode: screen;
+            color: #888888;
         }
 
         .logos-container {
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
             align-items: center;
             flex-wrap: wrap;
             margin-top: 2rem;
         }
-        
-        .logos-container .placeholder-image {
-            width: auto;
-            min-width: 150px;
-            aspect-ratio: 2/1;
+
+        .logos-container img {
+            height: 3rem;
+            object-fit: contain;
+            mix-blend-mode: screen;
+            opacity: 0.85;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        /* Scroll-Driven Schematic System */
-        section.schematic-track {
-            position: relative;
-            height: 500vh; /* Generous scroll track so panning is relaxed and graceful */
-            margin: 0;
-            padding: 0 !important;
-            opacity: 1 !important;
-            transform: none !important;
-        }
-
-        section.schematic-track.visible {
-            transform: none !important;
-        }
-
-        .schematic-sticky-container {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 2.5rem 2rem 2rem 0.75rem;
-            overflow: hidden;
-            z-index: 10;
-            opacity: 0; /* Starts hidden, fades in smoothly on scroll */
-            will-change: opacity;
-            pointer-events: none;
-        }
-
-        .schematic-sticky-container.active {
-            pointer-events: auto;
-        }
-
-        .schematic-header {
-            flex: 0 0 auto;
-            margin-bottom: 0.75rem;
-        }
-
-        .module-info-display {
-            display: flex;
-            align-items: baseline;
-            gap: 0.85rem;
-            flex-wrap: wrap;
-            margin-top: 0.35rem;
-            min-height: 2.2rem;
-        }
-
-        .module-num {
-            font-size: 0.85rem;
-            font-family: monospace;
-            color: #00ffcc;
-            letter-spacing: 1px;
-            font-weight: 300;
-        }
-
-        .module-title {
-            font-size: 1.4rem;
-            font-weight: 300;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-        }
-
-        .module-desc {
-            font-size: 0.95rem;
-            font-weight: 100;
-            color: #a0a0a0;
-        }
-
-        /* Borderless Viewport: No bounding box, no outlines */
-        .schematic-viewport {
-            flex: 1 1 auto;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: relative;
-            background: transparent;
-            border: none;
-            outline: none;
-        }
-
-        .schematic-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform-origin: 0 0;
-            will-change: transform;
-        }
-
-        .schematic-content img {
-            max-width: none;
-            filter: invert(1) hue-rotate(180deg) brightness(1.2);
-            pointer-events: none;
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .schematic-sticky-container {
-                top: 1rem;
-                height: calc(100vh - 2rem);
-            }
-            .module-title {
-                font-size: 1.15rem;
-            }
-            .module-desc {
-                font-size: 0.8rem;
-            }
+        .logos-container img:hover {
+            opacity: 1;
+            transform: translateY(-2px);
         }
 
     </style>
@@ -461,17 +425,50 @@
 </head>
 <body>
 
-    <header style="position: relative;">
-        <a href="index.html" class="back-link" id="header-back" style="position: absolute; top: -1.5rem; left: 0; font-size: 1.5rem; color: #a0a0a0; text-decoration: none; z-index: 10;">←</a>
-        <img src="assets/shastra-logo-outline.png" alt="shastra." class="hero-logo" style="margin-bottom: 2rem; margin-top: 1.5rem; margin-left: -0.8rem;">
-    </header>
+    <!-- Persistent Header Navigation Link -->
+    <a href="index.html" class="back-link" aria-label="Back to overview">←</a>
 
-    <div class="container">
-        
-        <!-- 1. Explaining what it is -->
-        <section class="hero visible" style="padding-top: 0; margin-top: 0;">
-            
-            <p style="font-size: 1.2rem; color: #a0a0a0; max-width: 100%; margin-bottom: 3rem; line-height: 1.6;">
+    <!-- Interactive Top Stage: Scroll-Driven Cinematic Presentation -->
+    <div id="presentation-track" class="presentation-track">
+        <div class="presentation-sticky">
+
+            <!-- Stage 1: Hero Stage -->
+            <div id="hero-stage" class="hero-stage">
+                <div class="hero-inner">
+                    <img src="assets/shastra-logo-outline.png" alt="shastra." class="hero-logo-img">
+                    <div class="hero-subtitle">electric dirtbike</div>
+                    <div class="hero-prompt">
+                        <span class="prompt-text">scroll to interact</span>
+                        <span class="prompt-arrow">↓</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2 & 3: Schematic Presentation Stage -->
+            <div id="schematic-stage" class="schematic-stage">
+                <div class="schematic-header">
+                    <div class="stage-meta" id="stage-meta">overview</div>
+                    <h1 class="stage-title" id="stage-title">complex electrical design</h1>
+                </div>
+
+                <div class="schematic-viewport" id="schematic-viewport">
+                    <div class="schematic-canvas" id="schematic-canvas">
+                        <img id="schematic-img" src="assets/schematic.svg" alt="Complete KiCad Circuit Schematic">
+                    </div>
+                    <!-- Radial Vignette Spotlight -->
+                    <div class="schematic-vignette" id="schematic-vignette"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Normal Scrolling Content Below -->
+    <main class="normal-scroll-container">
+
+        <!-- 1. Project Overview & Specs -->
+        <section class="normal-section">
+            <p style="font-size: 1.25rem; color: #a0a0a0; max-width: 100%; margin-bottom: 3rem; line-height: 1.6;">
                 An electric motorcycle built from scratch by a team of 15 students at JSSATE-B.<br>
                 I was the Vice Head & led the Electrical and Electronics Team of 10 students, in my 2nd year of ECE Engineering.
             </p>
@@ -492,37 +489,13 @@
                     <li><strong>Brakes:</strong> Bybre dual-front and rear disk brakes.</li>
                 </ul>
                 <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
-                    <img src="assets/workshop-build.jpg" alt="Motorcycle Build in Workshop" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.6) contrast(1.15); display: block; min-height: 250px;">
+                    <img src="assets/workshop-build.jpg" alt="Motorcycle Build in Workshop" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.65) contrast(1.15); display: block; min-height: 250px;">
                 </div>
             </div>
         </section>
 
-        <section id="electrical-architecture" class="schematic-track">
-            <div class="schematic-sticky-container">
-                <div class="schematic-header">
-                    <h2>Electrical Architecture</h2>
-                    <p style="margin-bottom: 0.75rem; color: #a0a0a0; font-size: 1.1rem; line-height: 1.6;">
-                        The high voltage system and drivetrain control architecture, completely designed by me.
-                    </p>
-                    <div class="module-info-display" id="module-display">
-                        <span class="module-num" id="module-num">01 / 04</span>
-                        <span class="module-title" id="module-title">High-Voltage Traction & Drivetrain</span>
-                        <span class="module-desc" id="module-desc">— 72V 30Ah Li-Ion Pack • 200A Breaker • ASI BAC2000 Inverter • 2kW PMSM Motor</span>
-                    </div>
-                </div>
-
-                <div class="schematic-viewport" id="schematic-viewport">
-                    <div class="schematic-content" id="schematic-content">
-                        <img id="schematic-img" src="assets/schematic.svg" alt="Circuit Schematic">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
-        <!-- 3. Explaining its achievements -->
-        <section>
+        <!-- 2. Achievements & Performance Targets -->
+        <section class="normal-section">
             <div style="display: flex; justify-content: center; gap: 4rem; margin-bottom: 4rem; flex-wrap: wrap; text-align: center;">
                 <div style="max-width: 300px; display: flex; flex-direction: column; align-items: center;">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
@@ -564,194 +537,296 @@
             </div>
         </section>
 
-        <!-- 4. Explaining collaboration -->
-        <section style="padding-bottom: 5rem;">
+        <!-- 3. Sponsors & Technical Partners -->
+        <section class="normal-section" style="padding-bottom: 6rem;">
             <h2>Sponsors & Technical Partners</h2>
             <div class="logos-container">
-                <img src="assets/dassault-logo.png" alt="Dassault Systèmes" style="height: 3rem; object-fit: contain; mix-blend-mode: screen;">
-                <img src="assets/gremot-logo.png" alt="gremot" style="height: 3rem; object-fit: contain; mix-blend-mode: screen;">
-                <img src="assets/vivitron-logo.png" alt="Vivitron" style="height: 3rem; object-fit: contain; mix-blend-mode: screen;">
+                <img src="assets/dassault-logo.png" alt="Dassault Systèmes">
+                <img src="assets/gremot-logo.png" alt="gremot">
+                <img src="assets/vivitron-logo.png" alt="Vivitron">
             </div>
         </section>
 
-    </div>
+    </main>
 
+    <!-- Scroll-Driven Presentation Engine -->
     <script>
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+        (function() {
+            // Intersection Observer for normal sections fading in
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.15
             });
-        }, {
-            threshold: 0.15
-        });
 
-        document.querySelectorAll('section').forEach((section) => {
-            observer.observe(section);
-        });
+            document.querySelectorAll('.normal-section').forEach(sec => {
+                sectionObserver.observe(sec);
+            });
 
-        // Scroll-Driven Schematic Pan & Zoom
-        const track = document.getElementById('electrical-architecture');
-        const stickyContainer = track ? track.querySelector('.schematic-sticky-container') : null;
-        const viewport = document.getElementById('schematic-viewport');
-        const content = document.getElementById('schematic-content');
-        const numEl = document.getElementById('module-num');
-        const titleEl = document.getElementById('module-title');
-        const descEl = document.getElementById('module-desc');
+            // Interactive Presentation Elements
+            const track = document.getElementById('presentation-track');
+            const heroStage = document.getElementById('hero-stage');
+            const schemStage = document.getElementById('schematic-stage');
+            const viewport = document.getElementById('schematic-viewport');
+            const canvas = document.getElementById('schematic-canvas');
+            const vignette = document.getElementById('schematic-vignette');
+            const titleEl = document.getElementById('stage-title');
+            const metaEl = document.getElementById('stage-meta');
 
-        if (track && stickyContainer && viewport && content) {
-            const modules = [
+            if (!track || !heroStage || !schemStage || !viewport || !canvas || !vignette || !titleEl) {
+                return;
+            }
+
+            // Fixed Stations Configuration
+            const stations = [
                 {
-                    num: "01 / 04",
-                    name: "High-Voltage Traction & Drivetrain",
-                    desc: "— 72V 30Ah Li-Ion Pack • 200A Breaker • ASI BAC2000 Inverter • 2kW PMSM Motor",
+                    id: 'overview',
+                    meta: 'overview',
+                    title: 'complex electrical design',
+                    u: 0.50,
+                    v: 0.50,
+                    zoom: 1.0,
+                    vig: 0.0
+                },
+                {
+                    id: 'mod1',
+                    meta: 'module 01',
+                    title: 'high-voltage traction & drivetrain',
                     u: 0.270,
                     v: 0.366,
-                    scale: 2.3
+                    zoom: 2.70,
+                    vig: 1.0
                 },
                 {
-                    num: "02 / 04",
-                    name: "Vehicle Control & Safety Loop",
-                    desc: "— Electronic Throttle • Variable Regen Brakes • Dual Killswitches • Kickstand Interlock",
+                    id: 'mod2',
+                    meta: 'module 02',
+                    title: 'vehicle control & safety loop',
                     u: 0.193,
                     v: 0.638,
-                    scale: 2.5
+                    zoom: 2.80,
+                    vig: 1.0
                 },
                 {
-                    num: "03 / 04",
-                    name: "Auxiliary MCU & 12V Lighting",
-                    desc: "— Arduino Nano v2.x • Headlight & Taillight Relays • Turn Signals • Dedicated CAN Node",
+                    id: 'mod3',
+                    meta: 'module 03',
+                    title: 'auxiliary mcu & 12v lighting',
                     u: 0.730,
                     v: 0.288,
-                    scale: 2.1
+                    zoom: 2.60,
+                    vig: 1.0
                 },
                 {
-                    num: "04 / 04",
-                    name: "Dashboard Telemetry & CAN Gateway",
-                    desc: "— Radxa/Pi Cluster OS • TXB0104 Level Shifter • MCP2515 CAN Controller • SN65HVD230",
+                    id: 'mod4',
+                    meta: 'module 04',
+                    title: 'dashboard telemetry & can gateway',
                     u: 0.688,
                     v: 0.673,
-                    scale: 2.2
+                    zoom: 2.70,
+                    vig: 1.0
                 }
             ];
 
-            let lastActiveIdx = -1;
-            let currentProgress = 0;
             let targetProgress = 0;
+            let currentProgress = 0;
             let isAnimating = false;
 
-            function smoothstep(x) {
-                x = Math.max(0, Math.min(1, x));
+            let currentRenderedTitle = '';
+            let currentRenderedMeta = '';
+            let titleTimer = null;
+
+            function smoothstep(min, max, val) {
+                const x = Math.max(0, Math.min(1, (val - min) / (max - min)));
                 return x * x * (3 - 2 * x);
             }
 
-            function getInterp(p) {
-                // Wide, generous plateaus and gentle leisurely transitions
-                if (p < 0.24) {
-                    return { idx: 0, frac: 0.0, activeIdx: 0 };
-                } else if (p < 0.40) {
-                    const f = smoothstep((p - 0.24) / 0.16);
-                    return { idx: 0, frac: f, activeIdx: f >= 0.5 ? 1 : 0 };
-                } else if (p < 0.54) {
-                    return { idx: 1, frac: 0.0, activeIdx: 1 };
-                } else if (p < 0.70) {
-                    const f = smoothstep((p - 0.54) / 0.16);
-                    return { idx: 1, frac: f, activeIdx: f >= 0.5 ? 2 : 1 };
-                } else if (p < 0.84) {
-                    return { idx: 2, frac: 0.0, activeIdx: 2 };
-                } else if (p < 0.95) {
-                    const f = smoothstep((p - 0.84) / 0.11);
-                    return { idx: 2, frac: f, activeIdx: f >= 0.5 ? 3 : 2 };
-                } else {
-                    return { idx: 3, frac: 0.0, activeIdx: 3 };
-                }
+            function updateTitleText(newTitle, newMeta) {
+                if (newTitle === currentRenderedTitle && newMeta === currentRenderedMeta) return;
+                currentRenderedTitle = newTitle;
+                currentRenderedMeta = newMeta;
+
+                if (titleTimer) clearTimeout(titleTimer);
+
+                titleEl.style.opacity = '0';
+                titleEl.style.transform = 'translateY(4px)';
+                if (metaEl) metaEl.style.opacity = '0';
+
+                titleTimer = setTimeout(() => {
+                    titleEl.textContent = newTitle;
+                    if (metaEl) metaEl.textContent = newMeta;
+                    titleEl.style.opacity = '1';
+                    titleEl.style.transform = 'translateY(0)';
+                    if (metaEl) metaEl.style.opacity = '1';
+                    titleTimer = null;
+                }, 160);
             }
 
-            function updateModuleText(mod) {
-                if (numEl && titleEl && descEl) {
-                    numEl.innerText = mod.num;
-                    titleEl.innerText = mod.name;
-                    descEl.innerText = mod.desc;
+            function calculateTimeline(p) {
+                // 1. Stage Opacities
+                let heroOp = 1.0;
+                if (p <= 0.06) {
+                    heroOp = 1.0;
+                } else if (p < 0.16) {
+                    heroOp = 1.0 - smoothstep(0.06, 0.16, p);
+                } else {
+                    heroOp = 0.0;
                 }
+
+                let schemOp = 0.0;
+                if (p <= 0.06) {
+                    schemOp = 0.0;
+                } else if (p < 0.16) {
+                    schemOp = smoothstep(0.06, 0.16, p);
+                } else {
+                    schemOp = 1.0;
+                }
+
+                // 2. Camera Coordinates, Vignette, and Titles
+                let u, v, zoom, vig, targetTitle, targetMeta;
+
+                if (p <= 0.26) {
+                    // Hold Station 0: Overview
+                    u = stations[0].u;
+                    v = stations[0].v;
+                    zoom = stations[0].zoom;
+                    vig = 0.0;
+                    targetTitle = stations[0].title;
+                    targetMeta = stations[0].meta;
+                } else if (p < 0.38) {
+                    // Transition Overview -> Module 1
+                    const f = smoothstep(0.26, 0.38, p);
+                    u = stations[0].u + (stations[1].u - stations[0].u) * f;
+                    v = stations[0].v + (stations[1].v - stations[0].v) * f;
+                    zoom = stations[0].zoom + (stations[1].zoom - stations[0].zoom) * f;
+                    vig = f;
+                    const st = f >= 0.5 ? stations[1] : stations[0];
+                    targetTitle = st.title;
+                    targetMeta = st.meta;
+                } else if (p <= 0.48) {
+                    // Hold Module 1
+                    u = stations[1].u;
+                    v = stations[1].v;
+                    zoom = stations[1].zoom;
+                    vig = 1.0;
+                    targetTitle = stations[1].title;
+                    targetMeta = stations[1].meta;
+                } else if (p < 0.60) {
+                    // Transition Module 1 -> Module 2
+                    const f = smoothstep(0.48, 0.60, p);
+                    u = stations[1].u + (stations[2].u - stations[1].u) * f;
+                    v = stations[1].v + (stations[2].v - stations[1].v) * f;
+                    zoom = stations[1].zoom + (stations[2].zoom - stations[1].zoom) * f;
+                    vig = 1.0;
+                    const st = f >= 0.5 ? stations[2] : stations[1];
+                    targetTitle = st.title;
+                    targetMeta = st.meta;
+                } else if (p <= 0.70) {
+                    // Hold Module 2
+                    u = stations[2].u;
+                    v = stations[2].v;
+                    zoom = stations[2].zoom;
+                    vig = 1.0;
+                    targetTitle = stations[2].title;
+                    targetMeta = stations[2].meta;
+                } else if (p < 0.82) {
+                    // Transition Module 2 -> Module 3
+                    const f = smoothstep(0.70, 0.82, p);
+                    u = stations[2].u + (stations[3].u - stations[2].u) * f;
+                    v = stations[2].v + (stations[3].v - stations[2].v) * f;
+                    zoom = stations[2].zoom + (stations[3].zoom - stations[2].zoom) * f;
+                    vig = 1.0;
+                    const st = f >= 0.5 ? stations[3] : stations[2];
+                    targetTitle = st.title;
+                    targetMeta = st.meta;
+                } else if (p <= 0.90) {
+                    // Hold Module 3
+                    u = stations[3].u;
+                    v = stations[3].v;
+                    zoom = stations[3].zoom;
+                    vig = 1.0;
+                    targetTitle = stations[3].title;
+                    targetMeta = stations[3].meta;
+                } else if (p < 0.97) {
+                    // Transition Module 3 -> Module 4
+                    const f = smoothstep(0.90, 0.97, p);
+                    u = stations[3].u + (stations[4].u - stations[3].u) * f;
+                    v = stations[3].v + (stations[4].v - stations[3].v) * f;
+                    zoom = stations[3].zoom + (stations[4].zoom - stations[3].zoom) * f;
+                    vig = 1.0;
+                    const st = f >= 0.5 ? stations[4] : stations[3];
+                    targetTitle = st.title;
+                    targetMeta = st.meta;
+                } else {
+                    // Hold Module 4
+                    u = stations[4].u;
+                    v = stations[4].v;
+                    zoom = stations[4].zoom;
+                    vig = 1.0;
+                    targetTitle = stations[4].title;
+                    targetMeta = stations[4].meta;
+                }
+
+                return { heroOp, schemOp, u, v, zoom, vig, targetTitle, targetMeta };
             }
 
             function renderFrame(p) {
-                const rect = track.getBoundingClientRect();
-                
-                // 1. Smooth Fade-In and Fade-Out (instead of scrolling normally)
-                let op = 0;
-                if (rect.top <= 0 && rect.bottom >= window.innerHeight * 0.15) {
-                    if (p < 0.08) {
-                        op = smoothstep(p / 0.08);
-                    } else if (p > 0.94) {
-                        op = smoothstep((1.0 - p) / 0.06);
-                    } else {
-                        op = 1.0;
-                    }
+                const state = calculateTimeline(p);
+
+                // Apply Hero Stage Opacity
+                heroStage.style.opacity = state.heroOp.toFixed(3);
+                heroStage.style.pointerEvents = state.heroOp > 0.05 ? 'auto' : 'none';
+
+                // Apply Schematic Stage Opacity
+                schemStage.style.opacity = state.schemOp.toFixed(3);
+                if (state.schemOp > 0.05) {
+                    schemStage.classList.add('active');
                 } else {
-                    op = 0;
+                    schemStage.classList.remove('active');
                 }
 
-                stickyContainer.style.opacity = op.toFixed(3);
-                if (op > 0.05) {
-                    stickyContainer.classList.add('active');
-                } else {
-                    stickyContainer.classList.remove('active');
-                }
+                // Apply Vignette Opacity
+                vignette.style.opacity = state.vig.toFixed(3);
 
-                // 2. Camera Pan and Zoom with gentle interpolation
-                const { idx, frac, activeIdx } = getInterp(p);
+                // Update Header Titles
+                updateTitleText(state.targetTitle, state.targetMeta);
 
-                let curU, curV, curScale;
-                if (idx < 3 && frac > 0) {
-                    const mA = modules[idx];
-                    const mB = modules[idx + 1];
-                    curU = mA.u + (mB.u - mA.u) * frac;
-                    curV = mA.v + (mB.v - mA.v) * frac;
-                    curScale = mA.scale + (mB.scale - mA.scale) * frac;
-                } else {
-                    const m = modules[idx];
-                    curU = m.u;
-                    curV = m.v;
-                    curScale = m.scale;
-                }
-
-                const img = content.querySelector('img');
-                const imgW = (img && img.offsetWidth) ? img.offsetWidth : 1587.36;
-                const imgH = (img && img.offsetHeight) ? img.offsetHeight : 1122.53;
+                // Compute Camera Translation & Zoom
+                const imgW = 1587.36;
+                const imgH = 1122.53;
                 const cW = viewport.clientWidth;
                 const cH = viewport.clientHeight;
 
-                const xTarget = (cW - imgW) / 2 + curU * imgW;
-                const yTarget = (cH - imgH) / 2 + curV * imgH;
+                // Scale factor for overview to fit comfortably within viewport bounds
+                const scaleOverview = Math.min((cW * 0.88) / imgW, (cH * 0.82) / imgH);
+                const curScale = scaleOverview * state.zoom;
+
+                // Target (u, v) centered within the container
+                const xTarget = (cW - imgW) / 2 + state.u * imgW;
+                const yTarget = (cH - imgH) / 2 + state.v * imgH;
 
                 const pointX = cW / 2 - xTarget * curScale;
                 const pointY = cH / 2 - yTarget * curScale;
 
-                content.style.transform = `translate(${pointX.toFixed(1)}px, ${pointY.toFixed(1)}px) scale(${curScale.toFixed(3)})`;
-
-                if (lastActiveIdx !== activeIdx) {
-                    lastActiveIdx = activeIdx;
-                    updateModuleText(modules[activeIdx]);
-                }
+                canvas.style.transform = `translate3d(${pointX.toFixed(1)}px, ${pointY.toFixed(1)}px, 0) scale(${curScale.toFixed(4)})`;
             }
 
             function animationLoop() {
                 const diff = targetProgress - currentProgress;
-                if (Math.abs(diff) < 0.0004) {
+                if (Math.abs(diff) < 0.0003) {
                     currentProgress = targetProgress;
                     renderFrame(currentProgress);
                     isAnimating = false;
                 } else {
-                    currentProgress += diff * 0.075; // Luxurious damped inertia
+                    currentProgress += diff * 0.085; // Refined damping factor
                     renderFrame(currentProgress);
                     requestAnimationFrame(animationLoop);
                 }
             }
 
-            function updateScrollPan() {
+            function onScroll() {
                 const rect = track.getBoundingClientRect();
                 const totalDist = track.offsetHeight - window.innerHeight;
                 if (totalDist <= 0) return;
@@ -765,45 +840,50 @@
                 }
             }
 
-            window.addEventListener('scroll', updateScrollPan, { passive: true });
+            // Event Listeners
+            window.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('resize', () => {
-                updateScrollPan();
+                onScroll();
                 renderFrame(currentProgress);
             }, { passive: true });
-            window.addEventListener('load', () => {
-                updateScrollPan();
-                currentProgress = targetProgress;
-                renderFrame(currentProgress);
-            });
-            requestAnimationFrame(() => {
-                updateScrollPan();
-                currentProgress = targetProgress;
-                renderFrame(currentProgress);
-            });
-        }
-    </script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.body.style.opacity = 0;
-        requestAnimationFrame(() => {
-            document.body.style.transition = "opacity 0.4s ease";
-            document.body.style.opacity = 1;
-        });
-    });
 
-    document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            if (this.hostname === window.location.hostname && !this.target && !this.hasAttribute('download')) {
-                e.preventDefault();
-                const targetUrl = this.href;
-                document.body.style.transition = "opacity 0.3s ease";
-                document.body.style.opacity = 0;
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 300);
-            }
+            window.addEventListener('load', () => {
+                onScroll();
+                currentProgress = targetProgress;
+                renderFrame(currentProgress);
+            });
+
+            requestAnimationFrame(() => {
+                onScroll();
+                currentProgress = targetProgress;
+                renderFrame(currentProgress);
+            });
+        })();
+    </script>
+
+    <!-- Page Transition Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.body.style.opacity = 0;
+            requestAnimationFrame(() => {
+                document.body.style.transition = "opacity 0.4s ease";
+                document.body.style.opacity = 1;
+            });
         });
-    });
-</script>
+
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.hostname === window.location.hostname && !this.target && !this.hasAttribute('download')) {
+                    e.preventDefault();
+                    const targetUrl = this.href;
+                    document.body.style.transition = "opacity 0.3s ease";
+                    document.body.style.opacity = 0;
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 300);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
