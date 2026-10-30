@@ -180,7 +180,7 @@
             flex-direction: column;
             padding: 2.25rem 2.5rem 1.75rem 2.5rem;
             z-index: 20;
-            opacity: 0;
+            opacity: 0.15; /* faintly visible behind hero */
             will-change: opacity;
             pointer-events: none;
         }
@@ -231,7 +231,7 @@
             flex-direction: column;
             padding: 2.25rem 2.5rem 1.75rem 2.5rem;
             z-index: 20;
-            opacity: 0;
+            opacity: 0.15; /* faintly visible behind hero */
             will-change: opacity;
             pointer-events: none;
         }
@@ -875,6 +875,9 @@
                 }
 
                 // Apply Vignette Opacity
+-                vignette.style.opacity = state.vig.toFixed(3);
++                // No vignette effect; keep transparent
++                vignette.style.opacity = '0';
                 vignette.style.opacity = state.vig.toFixed(3);
 
                 // Update Header Titles
