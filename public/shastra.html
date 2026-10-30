@@ -346,21 +346,77 @@
             aspect-ratio: 2/1;
         }
 
-        /* Schematic Viewer */
-        .schematic-container {
-            width: 100%;
-            height: 60vh;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.5);
-            overflow: hidden;
+        /* Scroll-Driven Schematic System */
+        section.schematic-track {
             position: relative;
-            cursor: grab;
-            border-radius: 8px;
-            margin-top: 1rem;
+            height: 320vh; /* Smooth scroll track for 4 modules */
+            margin: 0;
+            padding: 0 !important;
+            opacity: 1 !important;
+            transform: none !important;
         }
 
-        .schematic-container:active {
-            cursor: grabbing;
+        section.schematic-track.visible {
+            transform: none !important;
+        }
+
+        .schematic-sticky-container {
+            position: sticky;
+            top: 2rem;
+            height: calc(100vh - 4rem);
+            max-height: 850px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .schematic-header {
+            flex: 0 0 auto;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-info-display {
+            display: flex;
+            align-items: baseline;
+            gap: 0.85rem;
+            flex-wrap: wrap;
+            margin-top: 0.35rem;
+            min-height: 2.2rem;
+        }
+
+        .module-num {
+            font-size: 0.85rem;
+            font-family: monospace;
+            color: #00ffcc;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        .module-title {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .module-desc {
+            font-size: 0.95rem;
+            font-weight: 100;
+            color: #a0a0a0;
+        }
+
+        /* Borderless Viewport: No bounding box, no outlines */
+        .schematic-viewport {
+            flex: 1 1 auto;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            background: transparent;
+            border: none;
+            outline: none;
         }
 
         .schematic-content {
@@ -370,144 +426,26 @@
             align-items: center;
             justify-content: center;
             transform-origin: 0 0;
+            will-change: transform;
         }
 
         .schematic-content img {
             max-width: none;
-            /* Invert colors to match dark mode: Black lines become white */
             filter: invert(1) hue-rotate(180deg) brightness(1.2);
-            pointer-events: none; /* Let container handle events */
-        }
-        
-        .viewer-controls {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            background: rgba(0,0,0,0.8);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .viewer-controls button {
-            background: transparent;
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 4px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-        
-        .viewer-controls button:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        /* Artistic Module Tour Overlay & Controls */
-        .schematic-module-overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.78);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            padding: 0.9rem 1.25rem;
             pointer-events: none;
-            max-width: min(85vw, 450px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            z-index: 10;
+            display: block;
         }
 
-        .module-counter {
-            font-size: 0.72rem;
-            font-family: monospace;
-            color: #00ffcc;
-            letter-spacing: 1.5px;
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-        }
-
-        .module-title {
-            font-size: 1.2rem;
-            font-weight: 300;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-            margin-bottom: 0.25rem;
-            line-height: 1.2;
-        }
-
-        .module-desc {
-            font-size: 0.85rem;
-            font-weight: 100;
-            color: #a0a0a0;
-            line-height: 1.4;
-        }
-
-        .module-nav-controls {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            gap: 6px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 8px 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            align-items: center;
-            z-index: 10;
-        }
-
-        .mod-pill {
-            background: transparent;
-            color: #a0a0a0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-family: monospace;
-            padding: 4px 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .mod-pill:hover {
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .mod-pill.active {
-            color: #00ffcc;
-            border-color: #00ffcc;
-            background: rgba(0, 255, 204, 0.12);
-        }
-
-        @media (max-width: 640px) {
-            .schematic-module-overlay {
-                top: 10px;
-                left: 10px;
-                right: 10px;
-                max-width: none;
-                padding: 0.65rem 0.85rem;
+        @media (max-width: 768px) {
+            .schematic-sticky-container {
+                top: 1rem;
+                height: calc(100vh - 2rem);
             }
-            .module-title { font-size: 1rem; }
-            .module-desc { font-size: 0.75rem; }
-            .module-nav-controls {
-                bottom: 10px;
-                left: 10px;
-                padding: 6px 8px;
+            .module-title {
+                font-size: 1.15rem;
             }
-            .viewer-controls {
-                bottom: 10px;
-                right: 10px;
-                padding: 6px;
+            .module-desc {
+                font-size: 0.8rem;
             }
         }
 
@@ -552,32 +490,24 @@
             </div>
         </section>
 
-        <section>
-            <h2>Electrical Architecture</h2>
-            <p style="margin-bottom: 2rem; max-width: 800px;">
-                The high voltage system and drivetrain control architecture, completely designed by me. 
-                Drag to pan and use your scroll wheel to zoom in and explore the details.
-            </p>
-            <div class="schematic-container" id="schematic-container">
-                <div class="schematic-module-overlay" id="module-overlay">
-                    <div class="module-counter" id="module-counter">MODULE 01 / 04</div>
-                    <div class="module-title" id="module-title">High-Voltage Traction & Drivetrain</div>
-                    <div class="module-desc" id="module-desc">72V 30Ah Li-Ion Pack • 200A Breaker • ASI BAC2000 Inverter • 2kW PMSM Motor</div>
+        <section id="electrical-architecture" class="schematic-track">
+            <div class="schematic-sticky-container">
+                <div class="schematic-header">
+                    <h2>Electrical Architecture</h2>
+                    <p style="margin-bottom: 0.75rem; color: #a0a0a0; font-size: 1.1rem; line-height: 1.6;">
+                        The high voltage system and drivetrain control architecture, completely designed by me.
+                    </p>
+                    <div class="module-info-display" id="module-display">
+                        <span class="module-num" id="module-num">01 / 04</span>
+                        <span class="module-title" id="module-title">High-Voltage Traction & Drivetrain</span>
+                        <span class="module-desc" id="module-desc">— 72V 30Ah Li-Ion Pack • 200A Breaker • ASI BAC2000 Inverter • 2kW PMSM Motor</span>
+                    </div>
                 </div>
-                <div class="schematic-content" id="schematic-content">
-                    <img src="assets/schematic.svg" alt="Circuit Schematic">
-                </div>
-                <div class="module-nav-controls">
-                    <button class="mod-pill active" onclick="goToModule(0)" title="Module 1: HV Traction & Drivetrain">01</button>
-                    <button class="mod-pill" onclick="goToModule(1)" title="Module 2: Vehicle Control & Safety Loop">02</button>
-                    <button class="mod-pill" onclick="goToModule(2)" title="Module 3: Auxiliary MCU & 12V Lighting">03</button>
-                    <button class="mod-pill" onclick="goToModule(3)" title="Module 4: Dashboard Telemetry & CAN Gateway">04</button>
-                    <button class="mod-pill" id="tour-toggle-btn" onclick="toggleTour()" title="Auto-Tour Play/Pause">⏸</button>
-                </div>
-                <div class="viewer-controls">
-                    <button onclick="zoomOut()" title="Zoom Out">−</button>
-                    <button onclick="resetZoom()" title="Reset Zoom">↺</button>
-                    <button onclick="zoomIn()" title="Zoom In">+</button>
+
+                <div class="schematic-viewport" id="schematic-viewport">
+                    <div class="schematic-content" id="schematic-content">
+                        <img id="schematic-img" src="assets/schematic.svg" alt="Circuit Schematic">
+                    </div>
                 </div>
             </div>
         </section>
@@ -655,290 +585,145 @@
             observer.observe(section);
         });
 
-        // Schematic Pan and Zoom logic with Artistic Module Tour
-        const container = document.getElementById('schematic-container');
+        // Scroll-Driven Schematic Pan & Zoom
+        const track = document.getElementById('electrical-architecture');
+        const viewport = document.getElementById('schematic-viewport');
         const content = document.getElementById('schematic-content');
-        
-        if (container && content) {
-            let scale = 1;
-            let pointX = 0;
-            let pointY = 0;
-            let start = { x: 0, y: 0 };
-            let isPanning = false;
+        const numEl = document.getElementById('module-num');
+        const titleEl = document.getElementById('module-title');
+        const descEl = document.getElementById('module-desc');
 
+        if (track && viewport && content) {
             const modules = [
                 {
-                    number: "MODULE 01 / 04",
+                    num: "01 / 04",
                     name: "High-Voltage Traction & Drivetrain",
-                    desc: "72V 30Ah Li-Ion Pack • 200A Breaker • ASI BAC2000 Inverter • 2kW PMSM Motor",
+                    desc: "— 72V 30Ah Li-Ion Pack • 200A Breaker • ASI BAC2000 Inverter • 2kW PMSM Motor",
                     u: 0.270,
                     v: 0.366,
                     scale: 2.3
                 },
                 {
-                    number: "MODULE 02 / 04",
+                    num: "02 / 04",
                     name: "Vehicle Control & Safety Loop",
-                    desc: "Electronic Throttle • Variable Regen Brakes • Dual Killswitches • Kickstand Interlock",
+                    desc: "— Electronic Throttle • Variable Regen Brakes • Dual Killswitches • Kickstand Interlock",
                     u: 0.193,
                     v: 0.638,
                     scale: 2.5
                 },
                 {
-                    number: "MODULE 03 / 04",
+                    num: "03 / 04",
                     name: "Auxiliary MCU & 12V Lighting",
-                    desc: "Arduino Nano v2.x • Headlight & Taillight Relays • Turn Signals • Dedicated CAN Node",
+                    desc: "— Arduino Nano v2.x • Headlight & Taillight Relays • Turn Signals • Dedicated CAN Node",
                     u: 0.730,
                     v: 0.288,
                     scale: 2.1
                 },
                 {
-                    number: "MODULE 04 / 04",
+                    num: "04 / 04",
                     name: "Dashboard Telemetry & CAN Gateway",
-                    desc: "Radxa/Pi Cluster OS • TXB0104 Level Shifter • MCP2515 CAN Controller • SN65HVD230",
+                    desc: "— Radxa/Pi Cluster OS • TXB0104 Level Shifter • MCP2515 CAN Controller • SN65HVD230",
                     u: 0.688,
                     v: 0.673,
                     scale: 2.2
                 }
             ];
 
-            let currentModuleIndex = 0;
-            let isTourRunning = true;
-            let tourTimer = null;
-            let tourStarted = false;
-            const TOUR_STEP_DURATION = 5000;
+            let lastActiveIdx = -1;
 
-            function setTransform() {
-                content.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+            function smoothstep(x) {
+                x = Math.max(0, Math.min(1, x));
+                return x * x * (3 - 2 * x);
             }
 
-            function updateModuleBadge(mod) {
-                const overlay = document.getElementById('module-overlay');
-                const counter = document.getElementById('module-counter');
-                const title = document.getElementById('module-title');
-                const desc = document.getElementById('module-desc');
-                
-                if (overlay && counter && title && desc) {
-                    overlay.style.opacity = '0';
-                    overlay.style.transform = 'translateY(-4px)';
-                    setTimeout(() => {
-                        counter.innerText = mod.number;
-                        title.innerText = mod.name;
-                        desc.innerText = mod.desc;
-                        overlay.style.opacity = '1';
-                        overlay.style.transform = 'translateY(0)';
-                    }, 180);
+            function getInterp(p) {
+                if (p < 0.15) {
+                    return { idx: 0, frac: 0.0, activeIdx: 0 };
+                } else if (p < 0.35) {
+                    const f = smoothstep((p - 0.15) / 0.20);
+                    return { idx: 0, frac: f, activeIdx: f >= 0.5 ? 1 : 0 };
+                } else if (p < 0.50) {
+                    return { idx: 1, frac: 0.0, activeIdx: 1 };
+                } else if (p < 0.70) {
+                    const f = smoothstep((p - 0.50) / 0.20);
+                    return { idx: 1, frac: f, activeIdx: f >= 0.5 ? 2 : 1 };
+                } else if (p < 0.85) {
+                    return { idx: 2, frac: 0.0, activeIdx: 2 };
+                } else if (p < 0.95) {
+                    const f = smoothstep((p - 0.85) / 0.10);
+                    return { idx: 2, frac: f, activeIdx: f >= 0.5 ? 3 : 2 };
+                } else {
+                    return { idx: 3, frac: 0.0, activeIdx: 3 };
+                }
+            }
+
+            function updateModuleText(mod) {
+                if (numEl && titleEl && descEl) {
+                    numEl.innerText = mod.num;
+                    titleEl.innerText = mod.name;
+                    descEl.innerText = mod.desc;
+                }
+            }
+
+            function updateScrollPan() {
+                const rect = track.getBoundingClientRect();
+                const totalDist = track.offsetHeight - window.innerHeight;
+                if (totalDist <= 0) return;
+
+                const scrolled = -rect.top;
+                const progress = Math.max(0, Math.min(1, scrolled / totalDist));
+
+                const { idx, frac, activeIdx } = getInterp(progress);
+
+                let curU, curV, curScale;
+                if (idx < 3 && frac > 0) {
+                    const mA = modules[idx];
+                    const mB = modules[idx + 1];
+                    curU = mA.u + (mB.u - mA.u) * frac;
+                    curV = mA.v + (mB.v - mA.v) * frac;
+                    curScale = mA.scale + (mB.scale - mA.scale) * frac;
+                } else {
+                    const m = modules[idx];
+                    curU = m.u;
+                    curV = m.v;
+                    curScale = m.scale;
                 }
 
-                document.querySelectorAll('.mod-pill').forEach((pill, idx) => {
-                    if (idx === currentModuleIndex) {
-                        pill.classList.add('active');
-                    } else if (idx < modules.length) {
-                        pill.classList.remove('active');
-                    }
-                });
-            }
-
-            function panToModule(index, smooth = true) {
-                if (index < 0 || index >= modules.length) return;
-                currentModuleIndex = index;
-                const mod = modules[index];
                 const img = content.querySelector('img');
                 const imgW = (img && img.offsetWidth) ? img.offsetWidth : 1587.36;
                 const imgH = (img && img.offsetHeight) ? img.offsetHeight : 1122.53;
-                const cW = container.clientWidth;
-                const cH = container.clientHeight;
+                const cW = viewport.clientWidth;
+                const cH = viewport.clientHeight;
 
-                const xTarget = (cW - imgW) / 2 + mod.u * imgW;
-                const yTarget = (cH - imgH) / 2 + mod.v * imgH;
+                const xTarget = (cW - imgW) / 2 + curU * imgW;
+                const yTarget = (cH - imgH) / 2 + curV * imgH;
 
-                scale = mod.scale;
-                pointX = cW / 2 - xTarget * scale;
-                pointY = cH / 2 - yTarget * scale;
+                const pointX = cW / 2 - xTarget * curScale;
+                const pointY = cH / 2 - yTarget * curScale;
 
-                if (smooth) {
-                    content.style.transition = 'transform 1.4s cubic-bezier(0.25, 1, 0.35, 1)';
-                } else {
-                    content.style.transition = 'none';
-                }
+                content.style.transform = `translate(${pointX}px, ${pointY}px) scale(${curScale})`;
 
-                setTransform();
-                updateModuleBadge(mod);
-            }
-
-            function scheduleNextTourStep() {
-                clearTimeout(tourTimer);
-                if (!isTourRunning) return;
-                tourTimer = setTimeout(() => {
-                    if (!isTourRunning) return;
-                    currentModuleIndex = (currentModuleIndex + 1) % modules.length;
-                    panToModule(currentModuleIndex, true);
-                    scheduleNextTourStep();
-                }, TOUR_STEP_DURATION);
-            }
-
-            window.goToModule = function(index) {
-                isTourRunning = true;
-                updateTourButton();
-                panToModule(index, true);
-                scheduleNextTourStep();
-            };
-
-            window.toggleTour = function() {
-                isTourRunning = !isTourRunning;
-                updateTourButton();
-                if (isTourRunning) {
-                    panToModule(currentModuleIndex, true);
-                    scheduleNextTourStep();
-                } else {
-                    clearTimeout(tourTimer);
-                }
-            };
-
-            function updateTourButton() {
-                const btn = document.getElementById('tour-toggle-btn');
-                if (btn) {
-                    btn.innerText = isTourRunning ? '⏸' : '▶';
-                    btn.title = isTourRunning ? 'Pause Auto-Tour' : 'Play Auto-Tour';
+                if (lastActiveIdx !== activeIdx) {
+                    lastActiveIdx = activeIdx;
+                    updateModuleText(modules[activeIdx]);
                 }
             }
 
-            container.onmousedown = function (e) {
-                e.preventDefault();
-                content.style.transition = 'none';
-                if (isTourRunning) {
-                    isTourRunning = false;
-                    clearTimeout(tourTimer);
-                    updateTourButton();
+            let ticking = false;
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateScrollPan();
+                        ticking = false;
+                    });
+                    ticking = true;
                 }
-                start = { x: e.clientX - pointX, y: e.clientY - pointY };
-                isPanning = true;
-            };
-
-            container.onmouseup = function (e) {
-                isPanning = false;
-            };
-
-            container.onmouseleave = function (e) {
-                isPanning = false;
-            };
-
-            container.onmousemove = function (e) {
-                e.preventDefault();
-                if (!isPanning) return;
-                pointX = (e.clientX - start.x);
-                pointY = (e.clientY - start.y);
-                setTransform();
-            };
-
-            container.onwheel = function (e) {
-                e.preventDefault();
-                content.style.transition = 'none';
-                if (isTourRunning) {
-                    isTourRunning = false;
-                    clearTimeout(tourTimer);
-                    updateTourButton();
-                }
-                const rect = container.getBoundingClientRect();
-                const xs = (e.clientX - rect.left - pointX) / scale;
-                const ys = (e.clientY - rect.top - pointY) / scale;
-                
-                let delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
-                if (delta > 0) {
-                    scale *= 1.1;
-                } else {
-                    scale /= 1.1;
-                }
-                
-                scale = Math.max(0.1, Math.min(scale, 10));
-
-                pointX = (e.clientX - rect.left) - xs * scale;
-                pointY = (e.clientY - rect.top) - ys * scale;
-
-                setTransform();
-            };
-
-            window.zoomIn = function() {
-                content.style.transition = 'transform 0.2s ease-out';
-                if (isTourRunning) {
-                    isTourRunning = false;
-                    clearTimeout(tourTimer);
-                    updateTourButton();
-                }
-                const centerX = container.clientWidth / 2;
-                const centerY = container.clientHeight / 2;
-                const xs = (centerX - pointX) / scale;
-                const ys = (centerY - pointY) / scale;
-                scale *= 1.2;
-                scale = Math.min(scale, 10);
-                pointX = centerX - xs * scale;
-                pointY = centerY - ys * scale;
-                setTransform();
-            };
-
-            window.zoomOut = function() {
-                content.style.transition = 'transform 0.2s ease-out';
-                if (isTourRunning) {
-                    isTourRunning = false;
-                    clearTimeout(tourTimer);
-                    updateTourButton();
-                }
-                const centerX = container.clientWidth / 2;
-                const centerY = container.clientHeight / 2;
-                const xs = (centerX - pointX) / scale;
-                const ys = (centerY - pointY) / scale;
-                scale /= 1.2;
-                scale = Math.max(scale, 0.1);
-                pointX = centerX - xs * scale;
-                pointY = centerY - ys * scale;
-                setTransform();
-            };
-            
-            window.resetZoom = function() {
-                isTourRunning = false;
-                clearTimeout(tourTimer);
-                updateTourButton();
-                scale = 1;
-                pointX = 0;
-                pointY = 0;
-                content.style.transition = 'transform 1s cubic-bezier(0.25, 1, 0.35, 1)';
-                setTransform();
-                const overlay = document.getElementById('module-overlay');
-                const counter = document.getElementById('module-counter');
-                const title = document.getElementById('module-title');
-                const desc = document.getElementById('module-desc');
-                if (overlay && counter && title && desc) {
-                    counter.innerText = "OVERVIEW";
-                    title.innerText = "Complete High-Voltage & Control Schematic";
-                    desc.innerText = "KiCad 9.0 Circuit Architecture • Drag or scroll to explore freely";
-                }
-                document.querySelectorAll('.mod-pill').forEach((pill, idx) => {
-                    if (idx < modules.length) pill.classList.remove('active');
-                });
-            };
-
-            window.addEventListener('resize', () => {
-                if (isTourRunning) {
-                    panToModule(currentModuleIndex, false);
-                }
-            });
-
-            // Start tour when schematic section is visible
-            const schemObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !tourStarted) {
-                        tourStarted = true;
-                        setTimeout(() => {
-                            panToModule(0, true);
-                            scheduleNextTourStep();
-                        }, 500);
-                    }
-                });
-            }, { threshold: 0.15 });
-
-            const parentSection = container.closest('section');
-            if (parentSection) {
-                schemObserver.observe(parentSection);
             }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll, { passive: true });
+            window.addEventListener('load', updateScrollPan);
+            requestAnimationFrame(updateScrollPan);
         }
     </script>
 <script>
